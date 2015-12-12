@@ -14,6 +14,7 @@ local PhysicsSystem = require 'systems.physics'
 local JumpSystem = require 'systems.jump'
 local ShootSystem = require 'systems.shoot'
 local HealthSystem = require 'systems.health'
+local CleanSystem  = require 'systems.clean'
 
 local TestTurretAI = require 'systems.ai.test_turret'
 
@@ -50,6 +51,7 @@ function game_state()
     tiny.addSystem(ecs, ShootSystem)
     tiny.addSystem(ecs, HealthSystem)
     tiny.addSystem(ecs, TestTurretAI)
+    tiny.addSystem(ecs, CleanSystem)
 
 
     local player = Player.new()

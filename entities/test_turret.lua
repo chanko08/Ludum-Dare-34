@@ -8,7 +8,7 @@ function TestTurret.new( left, top )
     turret.color = {255, 255, 0}
     turret.health = 1
 
-    turret.vx = 0
+    turret.vx = -60
     turret.vy = 0
     turret.is_enemy = true
     turret.is_test_turret = true
@@ -62,8 +62,6 @@ function TestTurret.new( left, top )
         end
 
         bullet.color = {0, 255, 255 }
-        local remove = _.curry(_.curry(tiny.removeEntity, ecs), bullet)
-        Timer.after(math.abs(love.window.getWidth() / bullet.vx * 3), remove)
         tiny.addEntity(ecs, bullet)
     end
 
