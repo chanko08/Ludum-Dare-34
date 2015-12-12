@@ -10,6 +10,7 @@ tiny       = require 'lib.tiny'
 _          = require 'lib.underscore'
 
 local BBoxRenderer = require 'renderers.bbox'
+local ControlSelectionRenderer = require 'renderers.control_selection'
 local PhysicsSystem = require 'systems.physics'
 local JumpSystem = require 'systems.jump'
 local ShootSystem = require 'systems.shoot'
@@ -68,6 +69,7 @@ end
 
 function menu_state()
     tiny.addSystem(ecs, ControlSelectionSystem)
+    tiny.addSystem(ecs, ControlSelectionRenderer)
 
     local game_control = {}
     game_control.is_control_selection = true
