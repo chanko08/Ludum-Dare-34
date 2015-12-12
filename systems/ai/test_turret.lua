@@ -9,7 +9,7 @@ local function ready_gun(gun)
 end
 
 function TestTurretAI:process(entity, dt)
-    if entity.gun.ready then
+    if entity.gun.ready and entity.x < love.window.getWidth() then
         entity.gun.ready = false
         -- create bullet
         entity.gun.create_bullet(entity)

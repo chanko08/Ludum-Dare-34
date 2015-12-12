@@ -32,7 +32,7 @@ function Player.new()
         end
 
         --default to slide mechanics
-        return 'slide'
+        return 'touch'
     end
 
     player.collision.callback = function(col)
@@ -40,6 +40,12 @@ function Player.new()
             col.item.vy = 0
         end
     end
+
+    local level = {}
+    level.create_turret   = true
+    level.create_obstacle = true
+
+    player.level = level
 
     local gun = {}
     

@@ -9,12 +9,13 @@ bump       = require 'lib.bump'
 tiny       = require 'lib.tiny'
 _          = require 'lib.underscore'
 
-local BBoxRenderer = require 'renderers.bbox'
-local PhysicsSystem = require 'systems.physics'
-local JumpSystem = require 'systems.jump'
-local ShootSystem = require 'systems.shoot'
-local HealthSystem = require 'systems.health'
-local CleanSystem  = require 'systems.clean'
+local BBoxRenderer   = require 'renderers.bbox'
+local PhysicsSystem  = require 'systems.physics'
+local JumpSystem     = require 'systems.jump'
+local ShootSystem    = require 'systems.shoot'
+local HealthSystem   = require 'systems.health'
+local LevelGenerator = require 'systems.level_generator'
+local CleanSystem    = require 'systems.clean'
 
 local TestTurretAI = require 'systems.ai.test_turret'
 
@@ -28,8 +29,8 @@ world   = bump.newWorld()
 
 pause = false
 
-JUMP_KEY  = 'lctrl'
-SHOOT_KEY = 'rctrl'
+JUMP_KEY  = 'lshift'
+SHOOT_KEY = 'rshift'
 
 change_state = false
 function switch_state(st, ...)
@@ -51,6 +52,7 @@ function game_state()
     tiny.addSystem(ecs, ShootSystem)
     tiny.addSystem(ecs, HealthSystem)
     tiny.addSystem(ecs, TestTurretAI)
+    tiny.addSystem(ecs, LevelGenerator)
     tiny.addSystem(ecs, CleanSystem)
 
 

@@ -13,7 +13,7 @@ function TestTurret.new( left, top )
     turret.is_enemy = true
     turret.is_test_turret = true
     turret.collision = {}
-    turret.collision.filter =  function() return 'slide' end
+    turret.collision.filter =  function() return 'cross' end
     turret.collision.callback = function(col) end
 
     local gun = {}
