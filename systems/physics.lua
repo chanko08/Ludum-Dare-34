@@ -24,6 +24,13 @@ function PhysicsSystem:process(entity, dt)
 
     if entity.gravity then
         entity.vy = entity.vy + entity.gravity * dt
+        if entity.vy < -entity.max_speed then
+            entity.vy = -entity.max_speed
+        end
+
+        if entity.vy > entity.max_speed then
+            entity.vy = entity.max_speed
+        end
     end
 
     local dx = entity.vx * dt

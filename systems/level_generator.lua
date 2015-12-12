@@ -1,5 +1,6 @@
 local Wall       = require 'entities.wall'
 local Barrier    = require 'entities.barrier'
+local Coin       = require 'entities.coin'
 local TestTurret = require 'entities.test_turret'
 
 local LevelGenerator = tiny.processingSystem()
@@ -50,11 +51,28 @@ function LevelGenerator:process(entity, dt)
 			local x = love.window.getWidth() + 5
 			local hole_y = rand(10, love.window.getHeight() - hole_h)
 
-			tiny.addEntity(ecs, Barrier.new(x,0, x+hole_w, hole_y))
-			tiny.addEntity(ecs, Barrier.new(x, hole_y + hole_h, x+hole_w, love.window.getHeight()))
+			tiny.addEntity(ecs, Barrier.new(x,0, hole_w, hole_y))
+			tiny.addEntity(ecs, Barrier.new(x, hole_y + hole_h, hole_w, love.window.getHeight()))
 		end
 
 		Timer.after( rand(10,20), reset_boolean(entity.level, 'create_obstacle') )
+	end
+
+	if entity.level.create_coins then
+		entity.level.create_coins = false
+
+		local n_coins = math.floor(rand(1,11))
+
+		start_x = love.window.getWidth()+20
+
+		start_y = rand(.1,.9)*love.window.getHeight()
+		end_y   = start_y + rand(-50,50)
+
+		for i=1,n_coins do
+			tiny.addEntity(ecs, Coin.new(start_x + 50*i, start_y + i*(end_y-start_y)/n_coins, 10))
+		end
+
+		Timer.after( rand(3,10), reset_boolean(entity.level, 'create_coins') )
 	end
 
 end

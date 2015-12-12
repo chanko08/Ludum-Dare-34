@@ -38,6 +38,7 @@ function TestTurret.new( left, top )
             local filter = {}
             filter.is_player = 'touch'
             filter.is_ground = 'cross'
+            filter.is_item   = 'cross'
             filter.is_enemy  = 'cross'
             filter.is_bullet = 'cross'
 

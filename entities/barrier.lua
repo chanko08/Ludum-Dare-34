@@ -12,6 +12,7 @@ function Barrier.new(left, top, width, height)
     barrier.color = {0, 0, 255}
     
     barrier.is_ground = true
+    barrier.is_barrier = true
     barrier.static = false
 
     barrier.collision = {}
