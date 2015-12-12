@@ -13,8 +13,13 @@ local BBoxRenderer = require 'renderers.bbox'
 local PhysicsSystem = require 'systems.physics'
 local JumpSystem = require 'systems.jump'
 local ShootSystem = require 'systems.shoot'
+local HealthSystem = require 'systems.health'
+
+local TestTurretAI = require 'systems.ai.test_turret'
 
 local Player = require 'entities.player'
+local Wall   = require 'entities.wall'
+local TestTurret = require 'entities.test_turret'
 
 
 ecs     = tiny.world()
@@ -43,12 +48,19 @@ function game_state()
     tiny.addSystem(ecs, JumpSystem)
     tiny.addSystem(ecs, PhysicsSystem)
     tiny.addSystem(ecs, ShootSystem)
+    tiny.addSystem(ecs, HealthSystem)
+    tiny.addSystem(ecs, TestTurretAI)
 
-    
 
     local player = Player.new()
+    local ground = Wall.new(-5, love.window.getHeight() - 10, love.window.getWidth(), 20)
+    local ceiling = Wall.new(-5, -10, love.window.getWidth(), 20)
+    local turret = TestTurret.new(400, 250)
 
     tiny.addEntity(ecs, player)
+    tiny.addEntity(ecs, ground)
+    tiny.addEntity(ecs, ceiling)
+    tiny.addEntity(ecs, turret)
 end
 
 function menu_state()

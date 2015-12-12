@@ -1,6 +1,6 @@
-local ShootSystem = tiny.processingSystem()
+local TestTurretAI = tiny.processingSystem()
 
-ShootSystem.filter = tiny.requireAll('is_player')
+TestTurretAI.filter = tiny.requireAll('is_test_turret')
 
 local function ready_gun(gun) 
     return function()
@@ -8,15 +8,15 @@ local function ready_gun(gun)
     end
 end
 
-function ShootSystem:process(entity, dt)
-    if love.keyboard.isDown(SHOOT_KEY) and entity.gun.ready then
+function TestTurretAI:process(entity, dt)
+    if entity.gun.ready then
         entity.gun.ready = false
         -- create bullet
         entity.gun.create_bullet(entity)
 
         -- after timeout, 
         Timer.after(entity.gun.fire_delay, ready_gun(entity.gun))
-    end 
+    end
 end
 
-return ShootSystem
+return TestTurretAI
