@@ -9,7 +9,7 @@ local function ready_gun(gun)
 end
 
 function ShootSystem:process(entity, dt)
-    if love.keyboard.isDown(SHOOT_KEY) and entity.gun.ready then
+    if entity.controls.shoot_pressed() and entity.gun.ready then
         entity.gun.ready = false
         -- create bullet
         entity.gun.create_bullet(entity)
