@@ -1,6 +1,6 @@
 local Player = {}
 
-function Player.new()
+function Player.new(controls)
     local player = {}
     player.x = 100
     player.y = 100
@@ -15,6 +15,7 @@ function Player.new()
     player.die_callback = function ()
         print('YOU DIED')
     end
+    player.controls = controls
     player.is_player = true
     player.collision = {}
     player.collision.filter = function(item, other)

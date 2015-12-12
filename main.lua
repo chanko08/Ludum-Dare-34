@@ -9,13 +9,16 @@ bump       = require 'lib.bump'
 tiny       = require 'lib.tiny'
 _          = require 'lib.underscore'
 
-local BBoxRenderer   = require 'renderers.bbox'
-local PhysicsSystem  = require 'systems.physics'
-local JumpSystem     = require 'systems.jump'
-local ShootSystem    = require 'systems.shoot'
-local HealthSystem   = require 'systems.health'
 local LevelGenerator = require 'systems.level_generator'
-local CleanSystem    = require 'systems.clean'
+local BBoxRenderer = require 'renderers.bbox'
+local ControlSelectionRenderer = require 'renderers.control_selection'
+local PhysicsSystem = require 'systems.physics'
+local JumpSystem = require 'systems.jump'
+local ShootSystem = require 'systems.shoot'
+local HealthSystem = require 'systems.health'
+local CleanSystem  = require 'systems.clean'
+local ControlSelectionSystem = require 'systems.control_selection'
+
 
 local TestTurretAI = require 'systems.ai.test_turret'
 
@@ -45,7 +48,7 @@ function refresh_state()
 end
 
 
-function game_state()
+function game_state(controls)
     tiny.addSystem(ecs, BBoxRenderer)
     tiny.addSystem(ecs, JumpSystem)
     tiny.addSystem(ecs, PhysicsSystem)
@@ -56,7 +59,7 @@ function game_state()
     tiny.addSystem(ecs, CleanSystem)
 
 
-    local player = Player.new()
+    local player = Player.new(controls)
     local ground = Wall.new(-5, love.window.getHeight() - 10, love.window.getWidth(), 20)
     local ceiling = Wall.new(-5, -10, love.window.getWidth(), 20)
     local turret = TestTurret.new(400, 250)
@@ -68,7 +71,14 @@ function game_state()
 end
 
 function menu_state()
-    -- 
+    tiny.addSystem(ecs, ControlSelectionSystem)
+    tiny.addSystem(ecs, ControlSelectionRenderer)
+
+    local game_control = {}
+    game_control.is_control_selection = true
+
+
+    tiny.addEntity(ecs, game_control)
 end
 
 function win_state()
@@ -82,13 +92,14 @@ end
 
 function love.load()
     refresh_state()
-    game_state()
+    menu_state()
+    --game_state()
 end
 
 
 function love.update(dt)
     if change_state then
-        state_refresh()
+        refresh_state()
         change_state.state(unpack(change_state.args))
         change_state = nil
     end
@@ -96,7 +107,7 @@ function love.update(dt)
         
     if not pause then
 
-        tiny.update(ecs, dt, tiny.rejectAny('draw'))
+        tiny.update(ecs, dt, tiny.rejectAny('draw', 'keyboard'))
         Timer.update(dt)
     end
 end
