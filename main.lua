@@ -13,7 +13,7 @@ local LevelGenerator = require 'systems.level_generator'
 local BBoxRenderer = require 'renderers.bbox'
 local ControlSelectionRenderer = require 'renderers.control_selection'
 local PhysicsSystem = require 'systems.physics'
-local JumpSystem = require 'systems.jump'
+local FlySystem = require 'systems.fly'
 local ShootSystem = require 'systems.shoot'
 local HealthSystem = require 'systems.health'
 local CleanSystem  = require 'systems.clean'
@@ -50,7 +50,7 @@ end
 
 function game_state(controls)
     tiny.addSystem(ecs, BBoxRenderer)
-    tiny.addSystem(ecs, JumpSystem)
+    tiny.addSystem(ecs, FlySystem)
     tiny.addSystem(ecs, PhysicsSystem)
     tiny.addSystem(ecs, ShootSystem)
     tiny.addSystem(ecs, HealthSystem)

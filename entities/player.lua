@@ -8,7 +8,7 @@ function Player.new(controls)
     player.h = 32
     player.vx = 0
     player.vy = 0
-    player.gravity = 1000
+    
     player.jump_force = -3000
     player.max_speed  = 200
     player.color = {255, 0, 0}
@@ -58,7 +58,7 @@ function Player.new(controls)
     
 
     gun.ready = true
-    gun.fire_delay = 0.1
+    gun.fire_delay = 0.5
     gun.create_bullet = function(player)
         local bullet = {}
         bullet.x = player.x + player.w + 10

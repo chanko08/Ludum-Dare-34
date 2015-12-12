@@ -37,21 +37,21 @@ function ControlSelectionSystem:process(entity, ev)
         return
     end
 
-    if  entity.jump_control then
-        entity.shoot_control = cb
-        entity.shoot_control_string = ev.control_string
+    if  entity.up_control then
+        entity.down_control = cb
+        entity.down_control_string = ev.control_string
 
         -- both selected, move to game screen
         local controls = {}
-        controls.jump_pressed = entity.jump_control
-        controls.shoot_pressed = entity.shoot_control
+        controls.up_pressed = entity.up_control
+        controls.down_pressed = entity.down_control
         entity.controls = controls
         Timer.after(2, function() switch_state(game_state, controls) end )
         return
     end
 
-    entity.jump_control = cb
-    entity.jump_control_string = ev.control_string
+    entity.up_control = cb
+    entity.up_control_string = ev.control_string
 end
 
 return ControlSelectionSystem
