@@ -52,6 +52,7 @@ function BasicGun.new()
         local remove = _.curry(_.curry(tiny.removeEntity, ecs), bullet)
         Timer.after(love.window.getWidth() / bullet.vx * 3, remove)
         tiny.addEntity(ecs, bullet)
+        return bullet
     end
 
     return gun

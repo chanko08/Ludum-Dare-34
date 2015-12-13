@@ -22,6 +22,7 @@ local ShootSystem = require 'systems.shoot'
 local HealthSystem = require 'systems.health'
 local CleanSystem  = require 'systems.clean'
 local ControlSelectionSystem = require 'systems.control_selection'
+local PulseBulletSystem = require 'systems.pulse_bullet'
 
 
 local TestTurretAI = require 'systems.ai.test_turret'
@@ -63,6 +64,7 @@ function game_state(controls)
     tiny.addSystem(ecs, SpinnerTurretAI)
     tiny.addSystem(ecs, LevelGenerator)
     tiny.addSystem(ecs, CleanSystem)
+    tiny.addSystem(ecs, PulseBulletSystem)
 
 
     local player = Player.new(controls)
@@ -71,6 +73,7 @@ function game_state(controls)
     local turret = TestTurret.new(400, 250)
 
     tiny.addEntity(ecs, player)
+    tiny.addEntity(ecs, player.gun)
     tiny.addEntity(ecs, ground)
     tiny.addEntity(ecs, ceiling)
     tiny.addEntity(ecs, turret)

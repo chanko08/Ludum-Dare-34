@@ -42,7 +42,7 @@ function PhysicsSystem:process(entity, dt)
     for i=1, n_cols do
         local col = cols[i]
         entity.collision.callback(col)
-        print(("col.other = %s, col.type = %s, col.normal = %d,%d"):format(col.other, col.type, col.normal.x, col.normal.y))
+        -- print(("col.other = %s, col.type = %s, col.normal = %d,%d"):format(col.other, col.type, col.normal.x, col.normal.y))
     end
 end
 
