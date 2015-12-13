@@ -12,7 +12,7 @@ function Player.new(controls)
     player.vy = 0
     
     player.jump_force = -3000
-    player.max_speed  = 200
+    player.max_speed  = 300
     player.color = {255, 0, 0}
     player.health = 100
     player.score = 0

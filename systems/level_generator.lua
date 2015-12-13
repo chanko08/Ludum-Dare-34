@@ -55,21 +55,24 @@ function LevelGenerator:process(entity, dt)
 			tiny.addEntity(ecs, Barrier.new(x, hole_y + hole_h, hole_w, love.window.getHeight()))
 		end
 
-		Timer.after( rand(10,20), reset_boolean(entity.level, 'create_obstacle') )
+		Timer.after( rand(2,10), reset_boolean(entity.level, 'create_obstacle') )
 	end
 
 	if entity.level.create_coins then
 		entity.level.create_coins = false
 
-		local n_coins = math.floor(rand(1,11))
+		local nx_coins = math.floor(rand(10,31))
+		local ny_coins = math.floor(rand(3,7))
 
 		start_x = love.window.getWidth()+20
 
-		start_y = rand(.1,.9)*love.window.getHeight()
+		start_y = rand(.2,.8)*love.window.getHeight()
 		end_y   = start_y + rand(-50,50)
 
-		for i=1,n_coins do
-			tiny.addEntity(ecs, Coin.new(start_x + 50*i, start_y + i*(end_y-start_y)/n_coins, 10))
+		for i=1,ny_coins do
+			for j=1,nx_coins do
+				tiny.addEntity(ecs, Coin.new(start_x + 25*j, start_y + j*(end_y-start_y)/nx_coins + 25*i, 10))
+			end
 		end
 
 		Timer.after( rand(3,10), reset_boolean(entity.level, 'create_coins') )
