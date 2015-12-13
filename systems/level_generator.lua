@@ -3,6 +3,7 @@ local Barrier    = require 'entities.barrier'
 local Coin       = require 'entities.coin'
 local TestTurret = require 'entities.test_turret'
 local SpinnerTurret = require 'entities.spinner_turret'
+local RapidTurret   = require 'entities.rapid_turret'
 
 local LevelGenerator = tiny.processingSystem()
 
@@ -20,6 +21,17 @@ end
 
 function LevelGenerator:process(entity, dt)
     
+    if entity.level.create_rapid then
+		entity.level.create_rapid = false
+
+		local x = love.window.getWidth()+80
+		local y = math.rand(100, love.window.getHeight() - 100)
+
+		tiny.addEntity(ecs, RapidTurret.new(x,y))
+
+		Timer.after( math.rand(0,3), reset_boolean(entity.level, 'create_rapid') )
+	end
+
 	if entity.level.create_turret then
 		entity.level.create_turret = false
 

@@ -1,18 +1,21 @@
 local BasicGun = {}
-function BasicGun.new()
+function BasicGun.new(player)
     local gun = {}
     
-
+    gun.player = player
     gun.ready = true
     gun.fire_delay = 0.5
     gun.base_bullet_width = 8
     gun.base_bullet_height = 8
+    gun.create_name = function()
+        return "robo-cannon"
+    end
     gun.create_bullet = function(start_x, start_y, start_dx, start_dy)
         local bullet = {}
         bullet.x = start_x
         bullet.y = start_y
         local bv = 1000*Vector(start_dx, start_dy)
-        print(inspect(bv))
+        
         bullet.vx = bv.x
         bullet.vy = bv.y
 
@@ -45,8 +48,16 @@ function BasicGun.new()
                 other.health = other.health - bullet.damage
             end
 
+            if other.is_enemy then
+                local value = other.score_value
+                if not value then
+                    value = 7
+                end
+                gun.player.score = gun.player.score + value
+            end
+
             if other.is_enemy or other.is_ground then
-                tiny.removeEntity(ecs, col.item)
+                tiny.removeEntity(ecs, col.item) 
             end
         end
 

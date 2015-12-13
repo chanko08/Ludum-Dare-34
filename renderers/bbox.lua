@@ -5,6 +5,7 @@ BoundingBoxRenderer.draw = true
 BoundingBoxRenderer.filter = tiny.requireAll('x','y','w','h','color')
 
 function BoundingBoxRenderer:process(entity, dt)
+    -- print('bbox')
     local r,g,b = unpack(entity.color)
     love.graphics.setColor(r,g,b, 70)
     love.graphics.rectangle('fill', entity.x, entity.y, entity.w, entity.h)

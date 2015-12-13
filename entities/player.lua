@@ -6,8 +6,8 @@ function Player.new(controls)
     local player = {}
     player.x = 100
     player.y = 100
-    player.w = 32
-    player.h = 32
+    player.w = 26
+    player.h = 26
     player.vx = 0
     player.vy = 0
     
@@ -15,6 +15,7 @@ function Player.new(controls)
     player.max_speed  = 300
     player.color = {255, 0, 0}
     player.health = 100
+    player.max_health = 100
     player.score = 0
     player.die_callback = function ()
         print('YOU DIED')
@@ -55,8 +56,14 @@ function Player.new(controls)
     level.create_spinner  = true
     level.create_obstacle = true
     level.create_coins    = true
+    level.create_rapid    = true
     player.level = level
-    player.gun = BasicGun.new()
+    player.gun = BasicGun.new(player)
+
+    player.hud_overlay = love.graphics.newImage('assets/img/hud.png')
+    player.hud_font    = love.graphics.newFont('assets/munro/MunroSmall.ttf', 32)
+    player.score_font  = love.graphics.newFont('assets/prstartk.ttf', 16)
+
 
     return player
 end

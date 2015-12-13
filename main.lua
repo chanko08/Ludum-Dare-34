@@ -13,9 +13,12 @@ math.rand = function(lo,hi)
     return lo + math.random()*(hi - lo)
 end
 
-local LevelGenerator = require 'systems.level_generator'
+
 local BBoxRenderer = require 'renderers.bbox'
 local ControlSelectionRenderer = require 'renderers.control_selection'
+local HudRenderer = require 'renderers.hud'
+
+local LevelGenerator = require 'systems.level_generator'
 local PhysicsSystem = require 'systems.physics'
 local FlySystem = require 'systems.fly'
 local ShootSystem = require 'systems.shoot'
@@ -27,6 +30,7 @@ local PulseBulletSystem = require 'systems.pulse_bullet'
 
 local TestTurretAI = require 'systems.ai.test_turret'
 local SpinnerTurretAI = require 'systems.ai.spinner_turret'
+local RapidTurretAI = require 'systems.ai.rapid_turret'
 
 local Player = require 'entities.player'
 local Wall   = require 'entities.wall'
@@ -55,13 +59,17 @@ end
 
 
 function game_state(controls)
+
     tiny.addSystem(ecs, BBoxRenderer)
+    tiny.addSystem(ecs, HudRenderer)
+
     tiny.addSystem(ecs, FlySystem)
     tiny.addSystem(ecs, PhysicsSystem)
     tiny.addSystem(ecs, ShootSystem)
     tiny.addSystem(ecs, HealthSystem)
     tiny.addSystem(ecs, TestTurretAI)
     tiny.addSystem(ecs, SpinnerTurretAI)
+    tiny.addSystem(ecs, RapidTurretAI)
     tiny.addSystem(ecs, LevelGenerator)
     tiny.addSystem(ecs, CleanSystem)
     tiny.addSystem(ecs, PulseBulletSystem)
@@ -70,7 +78,7 @@ function game_state(controls)
 
     local player = Player.new(controls)
     local ground = Wall.new(-5, love.window.getHeight() - 10, love.window.getWidth(), 20)
-    local ceiling = Wall.new(-5, -10, love.window.getWidth(), 100)
+    local ceiling = Wall.new(-5, -20, love.window.getWidth(), 20)
     local turret = TestTurret.new(400, 250)
 
     tiny.addEntity(ecs, player)

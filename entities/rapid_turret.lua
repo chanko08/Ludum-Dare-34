@@ -1,43 +1,44 @@
 local SplitterItem = require 'entities.splitter_item'
+local PulserItem = require 'entities.pulser_item'
+local RapidItem = require 'entities.rapid_item'
+local RapidGun  = require 'entities.rapid_gun'
+local HealthItem = require 'entities.health_item'
 
-local SpinnerTurret = {}
-function SpinnerTurret.new( left, top )
+local RapidTurret = {}
+function RapidTurret.new( left, top )
     local turret = {}
     turret.x = left
     turret.y = top
-    turret.w = 50
-    turret.h = 50
+    turret.w = 20
+    turret.h = 20
+    turret.shots = 3
+    turret.base_shots = 3
+    turret.repeat_shot_reset_delay = 1
+    turret.resetting = false
     turret.color = {255, 255, 0}
     turret.health = 1
     turret.die_callback = function()
-        tiny.addEntity(ecs, SplitterItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
+        tiny.addEntity(ecs, RapidItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
     end
 
     turret.vx = -60
     turret.vy = 0
-
-    turret.t = 0
-    turret.spin_speed = math.rand(-5,5)
-
     turret.is_enemy = true
-    turret.is_spinner_turret = true
+    turret.is_rapid_turret = true
     turret.collision = {}
     turret.collision.filter =  function() return 'cross' end
     turret.collision.callback = function(col) end
 
     local gun = {}
     gun.ready = true
-    gun.fire_delay = .05
+    gun.fire_delay = 1
     gun.create_bullet = function(turret)
         local bullet = {}
+        bullet.x = turret.x - 10
+        bullet.y = turret.y + turret.h / 2
+        bullet.vx = -500
+        bullet.vy = 0
 
-        local dir_x = math.cos(turret.spin_speed*turret.t)
-        local dir_y = math.sin(turret.spin_speed*turret.t)
-
-        bullet.x = turret.x + turret.w / 2 + 30*dir_x
-        bullet.y = turret.y + turret.h / 2 + 30*dir_y
-        bullet.vx = 500 * dir_x
-        bullet.vy = 500 * dir_y
 
         bullet.w = 8
         bullet.h = 8
@@ -77,13 +78,15 @@ function SpinnerTurret.new( left, top )
             end
         end
 
-        bullet.color = {0, 255, 255 }
+        bullet.color = {0, 255, 100 }
         tiny.addEntity(ecs, bullet)
     end
 
     turret.gun = gun
+    turret.gun = RapidGun.new(RapidGun.new(RapidGun.new(RapidGun.new(RapidGun.new(turret.gun)))))
+
 
     return turret
 end
 
-return SpinnerTurret
+return RapidTurret
