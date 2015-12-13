@@ -9,6 +9,10 @@ bump       = require 'lib.bump'
 tiny       = require 'lib.tiny'
 _          = require 'lib.underscore'
 
+math.rand = function(lo,hi)
+    return lo + math.random()*(hi - lo)
+end
+
 local LevelGenerator = require 'systems.level_generator'
 local BBoxRenderer = require 'renderers.bbox'
 local ControlSelectionRenderer = require 'renderers.control_selection'
@@ -21,6 +25,7 @@ local ControlSelectionSystem = require 'systems.control_selection'
 
 
 local TestTurretAI = require 'systems.ai.test_turret'
+local SpinnerTurretAI = require 'systems.ai.spinner_turret'
 
 local Player = require 'entities.player'
 local Wall   = require 'entities.wall'
@@ -55,6 +60,7 @@ function game_state(controls)
     tiny.addSystem(ecs, ShootSystem)
     tiny.addSystem(ecs, HealthSystem)
     tiny.addSystem(ecs, TestTurretAI)
+    tiny.addSystem(ecs, SpinnerTurretAI)
     tiny.addSystem(ecs, LevelGenerator)
     tiny.addSystem(ecs, CleanSystem)
 

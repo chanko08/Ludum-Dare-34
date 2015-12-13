@@ -52,6 +52,7 @@ function Player.new(controls)
 
     local level = {}
     level.create_turret   = true
+    level.create_spinner  = true
     level.create_obstacle = true
     level.create_coins    = true
     player.level = level
