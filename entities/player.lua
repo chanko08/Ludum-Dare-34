@@ -56,7 +56,7 @@ function Player.new(controls)
     level.create_obstacle = true
     level.create_coins    = true
     player.level = level
-    player.gun = BasicGun.new()
+    player.gun = BasicGun.new(player)
 
     return player
 end

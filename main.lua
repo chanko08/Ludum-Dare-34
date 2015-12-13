@@ -13,9 +13,12 @@ math.rand = function(lo,hi)
     return lo + math.random()*(hi - lo)
 end
 
-local LevelGenerator = require 'systems.level_generator'
+
 local BBoxRenderer = require 'renderers.bbox'
 local ControlSelectionRenderer = require 'renderers.control_selection'
+local HudRenderer = require 'renderers.hud'
+
+local LevelGenerator = require 'systems.level_generator'
 local PhysicsSystem = require 'systems.physics'
 local FlySystem = require 'systems.fly'
 local ShootSystem = require 'systems.shoot'
@@ -55,6 +58,7 @@ end
 
 
 function game_state(controls)
+    tiny.addSystem(ecs, HudRenderer)
     tiny.addSystem(ecs, BBoxRenderer)
     tiny.addSystem(ecs, FlySystem)
     tiny.addSystem(ecs, PhysicsSystem)
@@ -70,7 +74,7 @@ function game_state(controls)
 
     local player = Player.new(controls)
     local ground = Wall.new(-5, love.window.getHeight() - 10, love.window.getWidth(), 20)
-    local ceiling = Wall.new(-5, -10, love.window.getWidth(), 100)
+    local ceiling = Wall.new(-5, -20, love.window.getWidth(), 20)
     local turret = TestTurret.new(400, 250)
 
     tiny.addEntity(ecs, player)

@@ -1,8 +1,8 @@
 local BasicGun = {}
-function BasicGun.new()
+function BasicGun.new(player)
     local gun = {}
     
-
+    gun.player = player
     gun.ready = true
     gun.fire_delay = 0.5
     gun.base_bullet_width = 8
@@ -47,6 +47,11 @@ function BasicGun.new()
 
             if other.is_enemy or other.is_ground then
                 tiny.removeEntity(ecs, col.item)
+                local value = other.score_value
+                if not value then
+                    value = 7
+                end
+                gun.player.score = gun.player.score + value
             end
         end
 

@@ -72,6 +72,8 @@ function SpinnerTurret.new( left, top )
             if other.is_player then
                 other.health = other.health - bullet.damage
                 tiny.removeEntity(ecs, bullet)
+            elseif other.is_ground then
+                tiny.removeEntity(ecs, bullet)
             end
         end
 

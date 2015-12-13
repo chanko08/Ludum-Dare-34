@@ -1,7 +1,7 @@
 local SplitterItem = require 'entities.splitter_item'
 local PulserItem = require 'entities.pulser_item'
 local RapidItem = require 'entities.rapid_item'
-
+local HealthItem = require 'entities.health_item'
 
 local TestTurret = {}
 function TestTurret.new( left, top )
@@ -13,7 +13,7 @@ function TestTurret.new( left, top )
     turret.color = {255, 255, 0}
     turret.health = 1
     turret.die_callback = function()
-        tiny.addEntity(ecs, RapidItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
+        tiny.addEntity(ecs, HealthItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
     end
 
     turret.vx = -60
@@ -66,6 +66,8 @@ function TestTurret.new( left, top )
             
             if other.is_player then
                 other.health = other.health - bullet.damage
+                tiny.removeEntity(ecs, bullet)
+            elseif other.is_ground then
                 tiny.removeEntity(ecs, bullet)
             end
         end
