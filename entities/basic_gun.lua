@@ -11,8 +11,10 @@ function BasicGun.new()
         local bullet = {}
         bullet.x = start_x
         bullet.y = start_y
-        bullet.vx = 1000 * start_dx
-        bullet.vy = 0 * start_dy
+        local bv = 1000*Vector(start_dx, start_dy)
+        print(inspect(bv))
+        bullet.vx = bv.x
+        bullet.vy = bv.y
 
         bullet.w = gun.base_bullet_width
         bullet.h = gun.base_bullet_height
@@ -52,6 +54,7 @@ function BasicGun.new()
         local remove = _.curry(_.curry(tiny.removeEntity, ecs), bullet)
         Timer.after(love.window.getWidth() / bullet.vx * 3, remove)
         tiny.addEntity(ecs, bullet)
+        return bullet
     end
 
     return gun
