@@ -13,7 +13,7 @@ function TestTurret.new( left, top )
     turret.color = {255, 255, 0}
     turret.health = 1
     turret.die_callback = function()
-        tiny.addEntity(ecs, HealthItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
+        tiny.addEntity(ecs, RapidItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
     end
 
     turret.vx = -60
