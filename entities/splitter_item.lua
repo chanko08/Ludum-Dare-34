@@ -9,15 +9,12 @@ function SplitterItem.new( x, y )
     splitter.y = y
     splitter.w = 24
     splitter.h = 24
+    splitter.is_item = true
 
     splitter.color = {255, 100, 0}
 
     splitter.collision = {}
     splitter.collision.filter = function(item, other)
-        if other.is_player then
-            return 'touch'
-        end
-
         return 'cross'
     end
 
