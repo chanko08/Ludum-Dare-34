@@ -1,3 +1,5 @@
+local BasicGun = require 'entities.basic_gun'
+
 local Player = {}
 
 function Player.new(controls)
@@ -53,60 +55,8 @@ function Player.new(controls)
     level.create_obstacle = true
     level.create_coins    = true
     player.level = level
+    player.gun = BasicGun.new()
 
-    local gun = {}
-    
-
-    gun.ready = true
-    gun.fire_delay = 0.5
-    gun.create_bullet = function(player)
-        local bullet = {}
-        bullet.x = player.x + player.w + 10
-        bullet.y = player.y + player.h / 2
-        bullet.vx = 1000
-        bullet.vy = 0
-
-        bullet.w = 8
-        bullet.h = 8
-        bullet.damage = 20
-        bullet.is_bullet = true
-        bullet.collision = {}
-        bullet.collision.filter = function(item, other)
-            local filter = {}
-            filter.is_player = 'cross'
-            filter.is_ground = 'touch'
-            filter.is_enemy  = 'touch'
-
-            for tag_name, resolution_type in pairs(filter) do
-                if other[tag_name] then
-                    return resolution_type
-                end
-            end
-
-            --default to slide mechanics
-            return 'cross'
-
-        end
-
-        bullet.collision.callback = function(col)
-            local other = col.other
-            local bullet = col.item
-            if other.is_enemy then
-                other.health = other.health - bullet.damage
-            end
-
-            if other.is_enemy or other.is_ground then
-                tiny.removeEntity(ecs, col.item)
-            end
-        end
-
-        bullet.color = {0, 255, 0 }
-        local remove = _.curry(_.curry(tiny.removeEntity, ecs), bullet)
-        Timer.after(love.window.getWidth() / bullet.vx * 3, remove)
-        tiny.addEntity(ecs, bullet)
-    end
-
-    player.gun = gun
     return player
 end
 

@@ -1,3 +1,5 @@
+local SplitterItem = require 'entities.splitter_item'
+
 local TestTurret = {}
 function TestTurret.new( left, top )
     local turret = {}
@@ -7,6 +9,9 @@ function TestTurret.new( left, top )
     turret.h = 100
     turret.color = {255, 255, 0}
     turret.health = 1
+    turret.die_callback = function()
+        tiny.addEntity(ecs, SplitterItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
+    end
 
     turret.vx = -60
     turret.vy = 0
