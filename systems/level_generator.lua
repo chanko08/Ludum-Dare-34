@@ -76,10 +76,10 @@ function LevelGenerator:process(entity, dt)
 		local nx_coins = math.floor(math.rand(10,31))
 		local ny_coins = math.floor(math.rand(3,7))
 
-		start_x = love.window.getWidth()+20
+		local start_x = love.window.getWidth()+20
 
-		start_y = math.rand(.2,.8)*love.window.getHeight()
-		end_y   = start_y + math.rand(-50,50)
+		local start_y = math.rand(.2,.8)*love.window.getHeight()
+		local end_y   = start_y + math.rand(-50,50)
 
 		for i=1,ny_coins do
 			for j=1,nx_coins do
@@ -89,7 +89,6 @@ function LevelGenerator:process(entity, dt)
 
 		Timer.after( math.rand(3,10), reset_boolean(entity.level, 'create_coins') )
 	end
-
 end
 
 return LevelGenerator
