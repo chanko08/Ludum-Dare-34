@@ -30,6 +30,7 @@ local PulseBulletSystem = require 'systems.pulse_bullet'
 
 local TestTurretAI = require 'systems.ai.test_turret'
 local SpinnerTurretAI = require 'systems.ai.spinner_turret'
+local RapidTurretAI = require 'systems.ai.rapid_turret'
 
 local Player = require 'entities.player'
 local Wall   = require 'entities.wall'
@@ -58,14 +59,17 @@ end
 
 
 function game_state(controls)
-    tiny.addSystem(ecs, HudRenderer)
+
     tiny.addSystem(ecs, BBoxRenderer)
+    tiny.addSystem(ecs, HudRenderer)
+
     tiny.addSystem(ecs, FlySystem)
     tiny.addSystem(ecs, PhysicsSystem)
     tiny.addSystem(ecs, ShootSystem)
     tiny.addSystem(ecs, HealthSystem)
     tiny.addSystem(ecs, TestTurretAI)
     tiny.addSystem(ecs, SpinnerTurretAI)
+    tiny.addSystem(ecs, RapidTurretAI)
     tiny.addSystem(ecs, LevelGenerator)
     tiny.addSystem(ecs, CleanSystem)
     tiny.addSystem(ecs, PulseBulletSystem)

@@ -6,8 +6,8 @@ function Player.new(controls)
     local player = {}
     player.x = 100
     player.y = 100
-    player.w = 32
-    player.h = 32
+    player.w = 26
+    player.h = 26
     player.vx = 0
     player.vy = 0
     
@@ -56,6 +56,7 @@ function Player.new(controls)
     level.create_spinner  = true
     level.create_obstacle = true
     level.create_coins    = true
+    level.create_rapid    = true
     player.level = level
     player.gun = BasicGun.new(player)
 

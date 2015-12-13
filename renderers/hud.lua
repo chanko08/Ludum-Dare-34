@@ -1,6 +1,7 @@
-local HudSystem = tiny.processingSystem()
+local HudRenderer = tiny.processingSystem()
 
-HudSystem.filter = tiny.requireAll('is_player')
+HudRenderer.draw = true
+HudRenderer.filter = tiny.requireAll('is_player')
 
 local function float_to_binary_string(n)
     local s = ""
@@ -13,8 +14,27 @@ local function float_to_binary_string(n)
     return string.reverse(s)
 end
 
-function HudSystem:process(entity, dt)
-    print(float_to_binary_string(entity.score))
+local function firstToUpper(str)
+    return (str:gsub("^%l", string.upper))
 end
 
-return HudSystem
+function HudRenderer:process(entity, dt)
+    love.graphics.reset()
+    love.graphics.draw(entity.hud_overlay, 0, 0)
+
+    love.graphics.setFont(entity.hud_font)
+    love.graphics.print(firstToUpper(entity.gun.create_name()), 21, 661)
+    love.graphics.setFont(entity.score_font)
+    love.graphics.printf(float_to_binary_string(entity.score), 858, 41, 400, 'right')
+
+    love.graphics.setColor(240, 78, 34, 70)
+    love.graphics.rectangle(
+        'fill',
+        25,
+        45,
+        math.floor((334 - 25)*entity.health /entity.max_health),
+        20
+    )
+end
+
+return HudRenderer
