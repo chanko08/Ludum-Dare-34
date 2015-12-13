@@ -65,11 +65,12 @@ function game_state(controls)
     tiny.addSystem(ecs, LevelGenerator)
     tiny.addSystem(ecs, CleanSystem)
     tiny.addSystem(ecs, PulseBulletSystem)
+    
 
 
     local player = Player.new(controls)
     local ground = Wall.new(-5, love.window.getHeight() - 10, love.window.getWidth(), 20)
-    local ceiling = Wall.new(-5, -10, love.window.getWidth(), 20)
+    local ceiling = Wall.new(-5, -10, love.window.getWidth(), 100)
     local turret = TestTurret.new(400, 250)
 
     tiny.addEntity(ecs, player)
