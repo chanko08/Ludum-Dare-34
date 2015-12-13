@@ -5,6 +5,7 @@ local PULSE_RATE = 0.5 -- time it takes to go from small to big size to small ag
 
 function create_pulse_bullet( gun, bullet_constructor )
     return function(start_x, start_y, start_dx, start_dy)
+        print(inspect(gun))
         local b = bullet_constructor(start_x, start_y, start_dx, start_dy)
         b.is_pulse_bullet = true
         b.gun = gun
