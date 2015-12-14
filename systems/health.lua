@@ -8,9 +8,7 @@ function HealthSystem:process(entity, dt)
             entity.die_callback()
         end
         tiny.removeEntity(ecs, entity) 
-         if entity.is_player then
-            love.event.quit()
-        end
+
     end
 
 

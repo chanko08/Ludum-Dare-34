@@ -17,6 +17,8 @@ end
 local BBoxRenderer = require 'renderers.bbox'
 local ControlSelectionRenderer = require 'renderers.control_selection'
 local HudRenderer = require 'renderers.hud'
+local AnimationRenderer = require 'renderers.animation'
+local LoseGameRenderer = require 'renderers.lose_game'
 
 local LevelGenerator = require 'systems.level_generator'
 local PhysicsSystem = require 'systems.physics'
@@ -26,15 +28,21 @@ local HealthSystem = require 'systems.health'
 local CleanSystem  = require 'systems.clean'
 local ControlSelectionSystem = require 'systems.control_selection'
 local PulseBulletSystem = require 'systems.pulse_bullet'
+local AnimationSystem = require 'systems.animation'
+local LoseGameSystem = require 'systems.lose_game'
 
 
 local TestTurretAI = require 'systems.ai.test_turret'
 local SpinnerTurretAI = require 'systems.ai.spinner_turret'
 local RapidTurretAI = require 'systems.ai.rapid_turret'
+local LaserTurretAI = require 'systems.ai.laser_turret'
 
 local Player = require 'entities.player'
 local Wall   = require 'entities.wall'
-local TestTurret = require 'entities.test_turret'
+local TestTurret = require 'entities.laser_turret'
+
+
+local MUSIC = love.audio.newSource('assets/music/Azureflux_-_03_-_Superbyte.mp3')
 
 
 ecs     = tiny.world()
@@ -60,9 +68,12 @@ end
 
 function game_state(controls)
 
-    tiny.addSystem(ecs, BBoxRenderer)
+
+    tiny.addSystem(ecs, AnimationRenderer)
+    -- tiny.addSystem(ecs, BBoxRenderer)
     tiny.addSystem(ecs, HudRenderer)
 
+    tiny.addSystem(ecs, AnimationSystem)
     tiny.addSystem(ecs, FlySystem)
     tiny.addSystem(ecs, PhysicsSystem)
     tiny.addSystem(ecs, ShootSystem)
@@ -70,6 +81,7 @@ function game_state(controls)
     tiny.addSystem(ecs, TestTurretAI)
     tiny.addSystem(ecs, SpinnerTurretAI)
     tiny.addSystem(ecs, RapidTurretAI)
+    tiny.addSystem(ecs, LaserTurretAI)
     tiny.addSystem(ecs, LevelGenerator)
     tiny.addSystem(ecs, CleanSystem)
     tiny.addSystem(ecs, PulseBulletSystem)
@@ -94,22 +106,30 @@ function menu_state()
 
     local game_control = {}
     game_control.is_control_selection = true
+    game_control.title_font = love.graphics.newFont('assets/munro/Munro.ttf', 144)
+    game_control.selection_font = love.graphics.newFont('assets/munro/Munro.ttf', 72)
 
 
     tiny.addEntity(ecs, game_control)
 end
 
-function win_state()
-    -- 
-end
-
-function lose_state()
-    -- 
+function lose_state(player)
+    
+    tiny.addSystem(ecs, LoseGameRenderer) 
+    -- tiny.addSystem(ecs, LoseGameSystem)
+    local loser = {}
+    loser.score = player.score
+    loser.gun = player.gun
+    loser.title_font = love.graphics.newFont('assets/munro/Munro.ttf', 144)
+    loser.selection_font = love.graphics.newFont('assets/munro/Munro.ttf', 72)
+    tiny.addEntity(ecs, loser)
+    Timer.after(8, function() love.event.quit() end)
 end
 
 
 function love.load()
     refresh_state()
+    -- lose_state({score=120})
     menu_state()
     --game_state()
 end
@@ -122,15 +142,22 @@ function love.update(dt)
         change_state = nil
     end
 
+
         
     if not pause then
-
+        if not MUSIC:isPlaying() then
+            love.audio.play(MUSIC)
+        end
         tiny.update(ecs, dt, tiny.rejectAny('draw', 'keyboard'))
         Timer.update(dt)
+    else
+        love.audio.stop(MUSIC)
     end
 end
 
 function love.draw()
+    love.graphics.setBackgroundColor(61,56,69)
+    love.graphics.clear()
     tiny.update(ecs, 0, tiny.requireAll('draw'))
 end
 

@@ -1,3 +1,9 @@
+
+local BULLET_PIC   = love.graphics.newImage('assets/img/bullet1_sheet.png')
+local BULLET_GRID  = anim8.newGrid(8, 8, BULLET_PIC:getWidth(), BULLET_PIC:getHeight())
+
+
+
 local BasicGun = {}
 function BasicGun.new(player)
     local gun = {}
@@ -7,11 +13,16 @@ function BasicGun.new(player)
     gun.fire_delay = 0.5
     gun.base_bullet_width = 8
     gun.base_bullet_height = 8
+    
     gun.create_name = function()
         return "robo-cannon"
     end
     gun.create_bullet = function(start_x, start_y, start_dx, start_dy)
         local bullet = {}
+        bullet.move_animation = anim8.newAnimation(BULLET_GRID('1-2',1), 0.3)
+        bullet.explode_animation = anim8.newAnimation(BULLET_GRID(3,1), 0.2)
+        bullet.animation = bullet.move_animation
+        bullet.image = BULLET_PIC
         bullet.x = start_x
         bullet.y = start_y
         local bv = 1000*Vector(start_dx, start_dy)
@@ -57,7 +68,8 @@ function BasicGun.new(player)
             end
 
             if other.is_enemy or other.is_ground then
-                tiny.removeEntity(ecs, col.item) 
+                col.item.animation = col.item.explode_animation
+                Timer.after(0.2, function() tiny.removeEntity(ecs, col.item) end)
             end
         end
 
@@ -65,7 +77,7 @@ function BasicGun.new(player)
         local remove = _.curry(_.curry(tiny.removeEntity, ecs), bullet)
         Timer.after(love.window.getWidth() / bullet.vx * 3, remove)
         tiny.addEntity(ecs, bullet)
-        return bullet
+        return {bullet}
     end
 
     return gun

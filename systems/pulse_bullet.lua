@@ -18,8 +18,8 @@ local function pulseTween(entity)
     }
 
 
-    Timer.tween(entity.pulse_rate / 2, entity, max_dim, "in-out-sine", function()
-        Timer.tween(entity.pulse_rate / 2, entity, min_dim, "in-out-sine", function()
+    Timer.tween(entity.pulse_rate / 2, entity, {scale=1+entity.gun.pulse_size}, "in-out-sine", function()
+        Timer.tween(entity.pulse_rate / 2, entity, {scale=1}, "in-out-sine", function()
             entity.pulse_tween_done = true
         end)
     end)

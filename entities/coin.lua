@@ -1,9 +1,17 @@
+local COIN_PIC = love.graphics.newImage('assets/img/bitcoin_sheet.png')
+local COIN_PIC_GRID = anim8.newGrid(14,14, COIN_PIC:getWidth(), COIN_PIC:getHeight())
+
 local Coin = {}
+
 function Coin.new( x, y, value )
     local coin = {}
     coin.x = x
     coin.y = y
+    coin.image = COIN_PIC
+    coin.animation = anim8.newAnimation(COIN_PIC_GRID('1-3',1), 0.1)
 
+    coin.animation:gotoFrame(math.floor(math.rand(1,3)))
+    
     coin.vx = -200
     coin.vy = 0
 

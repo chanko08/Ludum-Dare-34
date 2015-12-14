@@ -63,6 +63,7 @@ end
 
 local function create_split_bullet(gun, bullet_constructor)
     return function(start_x, start_y, start_dx, start_dy)
+        local bullets = {}
 
         local start_stream_y = start_y + gun.stream_splits*(STREAM_SPACE + gun.base_bullet_height)/2
 
@@ -77,7 +78,7 @@ local function create_split_bullet(gun, bullet_constructor)
             bullet_constructor(start_x, start_y, bullet_dir.x, bullet_dir.y)
             side = -1 * side
         end
-        
+       return bullets 
     end
 end
 

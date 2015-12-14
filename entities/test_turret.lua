@@ -3,6 +3,14 @@ local PulserItem = require 'entities.pulser_item'
 local RapidItem = require 'entities.rapid_item'
 local HealthItem = require 'entities.health_item'
 
+
+local TURRET_PIC   = love.graphics.newImage('assets/img/turret_sheet.png')
+local TURRET_GRID  = anim8.newGrid(100, 100, TURRET_PIC:getWidth(), TURRET_PIC:getHeight())
+
+local TURRET_BULLET_PIC = love.graphics.newImage('assets/img/bullet2b_sheet.png')
+local TURRET_BULLET_GRID = anim8.newGrid(12, 12, TURRET_BULLET_PIC:getWidth(), TURRET_BULLET_PIC:getHeight())
+
+
 local TestTurret = {}
 function TestTurret.new( left, top )
     local turret = {}
@@ -12,8 +20,18 @@ function TestTurret.new( left, top )
     turret.h = 100
     turret.color = {255, 255, 0}
     turret.health = 1
+    turret.fire_animation = anim8.newAnimation(TURRET_GRID('1-5',1), 1/5.0)
+    turret.fire_animation:gotoFrame(4)
+    turret.animation = turret.fire_animation
+    turret.image = TURRET_PIC
     turret.die_callback = function()
-        tiny.addEntity(ecs, RapidItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
+        if math.random() <= 0.8 then
+            if math.random() <= 0.8 then
+                tiny.addEntity(ecs, PulserItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))                 
+            else
+                tiny.addEntity(ecs, HealthItem.new(turret.x + turret.w / 2, turret.y + turret.h / 2))
+            end         
+        end
     end
 
     turret.vx = -60
@@ -26,7 +44,7 @@ function TestTurret.new( left, top )
 
     local gun = {}
     gun.ready = true
-    gun.fire_delay = 1
+    gun.fire_delay = 2
     gun.create_bullet = function(turret)
         local bullet = {}
         bullet.x = turret.x - 10
@@ -34,9 +52,13 @@ function TestTurret.new( left, top )
         bullet.vx = -500
         bullet.vy = 0
 
-        bullet.w = 8
-        bullet.h = 8
+        bullet.w = 12
+        bullet.h = 12
 
+        bullet.move_animation = anim8.newAnimation(TURRET_BULLET_GRID('1-2',1), 0.3)
+        bullet.explode_animation = anim8.newAnimation(TURRET_BULLET_GRID(3,1), 0.2)
+        bullet.animation = bullet.move_animation
+        bullet.image = TURRET_BULLET_PIC
 
         bullet.damage = 20
         bullet.is_bullet = true
@@ -64,11 +86,15 @@ function TestTurret.new( left, top )
             local other = col.other
             local bullet = col.item
             
-            if other.is_player then
+            if other.is_player and not col.item.is_exploded then
                 other.health = other.health - bullet.damage
-                tiny.removeEntity(ecs, bullet)
-            elseif other.is_ground then
-                tiny.removeEntity(ecs, bullet)
+                col.item.is_exploded = true
+                col.item.animation = col.item.explode_animation
+                Timer.after(0.05, function() tiny.removeEntity(ecs, col.item) end)
+            elseif other.is_ground and not col.item.is_exploded then
+                col.item.is_exploded = true
+                col.item.animation = col.item.explode_animation 
+                Timer.after(0.05, function() tiny.removeEntity(ecs, col.item) end)
             end
         end
 

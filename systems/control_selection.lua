@@ -28,6 +28,7 @@ function ControlSelectionSystem:process(entity, ev)
         return
     end
 
+
     local cb
     if ev.key and ev.isDown then
         cb = keypressed_func(ev.key)
@@ -38,6 +39,12 @@ function ControlSelectionSystem:process(entity, ev)
     end
 
     if  entity.up_control then
+        if entity.up_control_string == ev.control_string then
+            entity.warning = "Cannot use only one button, pick another button"
+            print("HEHEHEHEHEHEH")
+            return
+        end
+
         entity.down_control = cb
         entity.down_control_string = ev.control_string
 

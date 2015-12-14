@@ -1,6 +1,6 @@
-local RapidTurretAI = tiny.processingSystem()
+local LaserTurretAI = tiny.processingSystem()
 
-RapidTurretAI.filter = tiny.requireAll('is_rapid_turret')
+LaserTurretAI.filter = tiny.requireAll('is_laser_turret')
 
 local function ready_gun(gun) 
     return function()
@@ -10,15 +10,16 @@ end
 
 local function reset_shots(entity)
     return function()
-        entity.animation = entity.fire_animation
-        entity.animation:gotoFrame(4)
+        -- entity.animation = entity.fire_animation
+        -- entity.animation:gotoFrame(4)
         entity.shots = entity.base_shots
         entity.resetting = false
 
     end
 end
 
-function RapidTurretAI:process(entity, dt)
+function LaserTurretAI:process(entity, dt)
+    
     if entity.gun.ready and entity.x < love.window.getWidth() and entity.shots > 0 then
         entity.gun.ready = false
         entity.shots = entity.shots - 1
@@ -30,9 +31,9 @@ function RapidTurretAI:process(entity, dt)
 
     if entity.shots <= 0 and not entity.resetting then
         entity.resetting = true
-        entity.animation = entity.resting_animation
+        -- entity.animation = entity.resting_animation
         Timer.after(entity.repeat_shot_reset_delay, reset_shots(entity))
     end
 end
 
-return RapidTurretAI
+return LaserTurretAI
